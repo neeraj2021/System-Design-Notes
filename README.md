@@ -35,7 +35,7 @@
 
     It's important to note that while transactions provide a powerful mechanism for data management, they also come with some overhead due to locking and coordination mechanisms to maintain isolation and consistency. Therefore, proper consideration should be given to transaction design, isolation levels, and performance trade-offs when designing systems that involve heavy transactional workloads.
 
-## WHAT IS A DATABASE ISOATION LEVEL ?
+## WHAT IS A DATABASE ISOLATION LEVEL ?
 
 - Database isolation levels are an essential concept in database management systems (DBMS) that deal with how transactions interact with each other.
 - They define the degree to which the operations within a transaction are isolated from the operations of other concurrent transactions
@@ -104,6 +104,54 @@
 ### Lock escalation
 
 - Lock escalation is the process of converting a large number
+
+<br>
+<br>
+
+## WHAT IS A DATABASE INDEX ?
+
+- A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure.
+- Indexes can be created using one or more columns of a database table, providing the basis for both rapid random lookups and efficient access of ordered records.
+- An index is a data structure that contains pointers to data in a table or a set of tables in a database.
+- Indexes are used to improve the performance of data retrieval operations on a database table.
+- Indexes can be created using one or more columns of a database table, providing the basis for both rapid random lookups and efficient access of ordered records.
+- Indexes are used to improve the performance of data retrieval operations on a database table.
+- Indexes can be created using one or more columns of a database table, providing the basis for both rapid random lookups and efficient access of ordered records.
+
+### Types of indexes
+
+- There are many types of indexes, each with its own advantages and disadvantages. Some of the most common types of indexes are:
+
+  - #### B-tree index
+
+    - A B-tree index is a balanced tree structure that is used to store keys in sorted order, allowing for efficient insertion, deletion, and retrieval of records based on their keys.
+    - B-tree indexes are widely used in database systems due to their ability to handle large amounts of data and provide fast lookups.
+
+  - #### Hash index
+
+    - A hash index is a data structure that uses a hash function to map keys to values.
+    - Hash indexes are not as flexible as B-tree indexes, but they are very efficient for equality lookups.
+    - Hash indexes are not as flexible as B-tree indexes, but they are very efficient for equality lookups.
+
+  - #### Bitmap index
+
+    - A bitmap index is a data structure that uses bitmaps to store the values of a column in a table.
+    - Bitmap indexes are very efficient for low-cardinality columns, i.e., columns that contain a small number of distinct values.
+    - Bitmap indexes are very efficient for low-cardinality columns, i.e., columns that contain a small number of distinct values.
+
+  - #### R-tree index
+
+    - A R-tree index is a balanced tree structure that is used to store spatial data in a database.
+    - R-tree indexes are commonly used in geostatics databases.
+    - R-tree indexes are commonly used
+
+### Disadvantages of indexes
+
+Indexes can improve the performance of data retrieval operations, but they also come with some disadvantages:
+
+- Indexes require additional storage space.
+- Indexes slow down data insertion, modification, and deletion operations because the indexes also need to be updated.
+- Indexes can increase the complexity of the database design.
 
 <br>
 <br>
