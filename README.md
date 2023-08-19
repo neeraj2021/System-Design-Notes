@@ -46,56 +46,104 @@
 ### Isolation levels in SQL
 
 - ### Read Uncommitted
-    - This is the lowest isolation level, in which transactions are not isolated from each other.
-    - Transactions running at this level may read data that has been modified by other concurrent transactions but not yet committed.
-    - This can result in non-repeatable reads, in which a transaction reads the same record twice but sees different data each time.
-    - It can also result in phantom reads, in which a transaction re-runs a query returning a set of rows that satisfy a search condition and finds that the set of rows has changed due to another concurrent transaction.
-    - The READ UNCOMMITTED isolation level is not supported by all DBMSs.
 
+  - This is the lowest isolation level, in which transactions are not isolated from each other.
+  - Transactions running at this level may read data that has been modified by other concurrent transactions but not yet committed.
+  - This can result in non-repeatable reads, in which a transaction reads the same record twice but sees different data each time.
+  - It can also result in phantom reads, in which a transaction re-runs a query returning a set of rows that satisfy a search condition and finds that the set of rows has changed due to another concurrent transaction.
+  - The READ UNCOMMITTED isolation level is not supported by all DBMSs.
 
 - ### Read Committed
-    - This isolation level guarantees that any data read by a transaction is committed at the moment it reads the data.
-    - It also guarantees that any data written by a transaction is not read by any other concurrent transaction until the data is committed.
-    - This prevents non-repeatable reads but still allows phantom reads.
-    - The READ COMMITTED isolation level is supported by all major DBMSs.
+
+  - This isolation level guarantees that any data read by a transaction is committed at the moment it reads the data.
+  - It also guarantees that any data written by a transaction is not read by any other concurrent transaction until the data is committed.
+  - This prevents non-repeatable reads but still allows phantom reads.
+  - The READ COMMITTED isolation level is supported by all major DBMSs.
 
 - ### Repeatable Read
-    - This isolation level guarantees that any data read by a transaction cannot be modified by other concurrent transactions until the transaction completes.
-    - This isolation level guarantees that if a transaction reads the same data twice, it will get the same result both times.
-    - This prevents non-repeatable reads and phantom reads but still allows phantom reads.
-    - The REPEATABLE READ isolation level is supported by all major DBMSs.
+
+  - This isolation level guarantees that any data read by a transaction cannot be modified by other concurrent transactions until the transaction completes.
+  - This isolation level guarantees that if a transaction reads the same data twice, it will get the same result both times.
+  - This prevents non-repeatable reads and phantom reads but still allows phantom reads.
+  - The REPEATABLE READ isolation level is supported by all major DBMSs.
 
 - ### Serializable
-    - This is the highest isolation level. 
-    - It ensures that transactions are executed in a way that their effects are equivalent to running them one after another, i.e., serially. 
-    - It prevents dirty reads, non-repeatable reads, and phantom reads.
-    - but it can also lead to performance issues due to increased locking and reduced concurrency.
 
+  - This is the highest isolation level.
+  - It ensures that transactions are executed in a way that their effects are equivalent to running them one after another, i.e., serially.
+  - It prevents dirty reads, non-repeatable reads, and phantom reads.
+  - but it can also lead to performance issues due to increased locking and reduced concurrency.
 
-            The following table shows the phenomena that can occur under each isolation level.
+          The following table shows the phenomena that can occur under each isolation level.
 
-            | Phenomena                 | Read uncommitted | Read committed | Repeatable read | Serializable |
-            | ------------------------- | ---------------- | -------------- | --------------- | ------------ |
-            | Dirty read                | Possible         | Not possible   | Not possible    | Not possible |
-            | Non-repeatable read       | Possible         | Possible       | Not possible    | Not possible |
-            | Phantom read              | Possible         | Possible       | Possible        | Not possible |
-            | Lost update               | Possible         | Possible       | Possible        | Not possible |
-            | Unrepeatable read         | Possible         | Possible       | Possible        | Not possible |
-            | Incorrect summary         | Possible         | Possible       | Possible        | Possible     |
-            | Inconsistent analysis     | Possible         | Possible       | Possible        | Possible     |
-            | Non-repeatable range read | Possible         | Possible       | Possible        | Possible     |
-            | Phantom range read        | Possible         | Possible       | Possible        | Possible     |
+          | Phenomena                 | Read uncommitted | Read committed | Repeatable read | Serializable |
+          | ------------------------- | ---------------- | -------------- | --------------- | ------------ |
+          | Dirty read                | Possible         | Not possible   | Not possible    | Not possible |
+          | Non-repeatable read       | Possible         | Possible       | Not possible    | Not possible |
+          | Phantom read              | Possible         | Possible       | Possible        | Not possible |
+          | Lost update               | Possible         | Possible       | Possible        | Not possible |
+          | Unrepeatable read         | Possible         | Possible       | Possible        | Not possible |
+          | Incorrect summary         | Possible         | Possible       | Possible        | Possible     |
+          | Inconsistent analysis     | Possible         | Possible       | Possible        | Possible     |
+          | Non-repeatable range read | Possible         | Possible       | Possible        | Possible     |
+          | Phantom range read        | Possible         | Possible       | Possible        | Possible     |
 
 ## WHAT IS A LOCK IN DATABASES ?
+
 - A lock is a mechanism that prevents multiple users from accessing the same data concurrently.
 - Locks are essential for concurrency control, which is a mechanism that prevents conflicts and data anomalies that can arise when multiple users access and modify the same data concurrently.
 - Locks are used to protect shared resources in a multi-user environment where multiple transactions can access and modify the same data concurrently.
 - Locks can be applied at different levels of granularity. They can be applied to the entire database, a table, a row, or even a single field within a row.
 
 ### Types of locks
+
 - There are two main types of locks: shared locks and exclusive locks.
   - A shared lock allows the holder of the lock to read a resource but not modify it. Multiple shared locks can be held on the same resource at the same time.
   - An exclusive lock allows the holder of the lock to both read and modify a resource. Only one exclusive lock can be held on a resource at a time.
 
 ### Lock escalation
+
 - Lock escalation is the process of converting a large number
+
+<br>
+<br>
+
+## HOW TO STORE PASSWORDS SAFELY IN THE DATABASE ?
+
+### Things not to do:
+
+- Do not store passwords in plain text.
+- Do not store passwords encrypted with symmetric encryption. Symmetric encryption uses a single key to encrypt and decrypt data. The key is shared between the sender and the receiver of the data. If the key is compromised, the data can be decrypted.
+
+### What is salt
+
+- A salt is a random sequence of data that is used to modify a password before it is hashed.
+- Salting is a technique that is used to strengthen the security of password hashing.
+- It makes it more difficult for attackers to crack passwords using brute force or dictionary attacks.
+
+Example:
+
+```javascript
+const crypto = require("crypto");
+
+const password = "password123";
+
+// Generate a random salt
+const salt = crypto.randomBytes(16).toString("hex");
+
+// Generate a hash using the password and the salt
+const hash = crypto
+  .pbkdf2Sync(password, salt, 1000, 64, "sha512")
+  .toString("hex");
+
+console.log(`Salt: ${salt}`);
+console.log(`Hash: ${hash}`);
+```
+
+### How to validate a password
+
+- A client sends a password to the server.
+- The system fetches the corresponding salt from the database.
+- The system appends the salt to the password and hashes it. Let’s
+  call the hashed value H1.
+- The system compares H1 with the hashed password stored in the database. If they match, the password is valid; otherwise, the password is invalid.
